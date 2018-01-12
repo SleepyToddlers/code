@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+
 import smbus
 import math
 import time
@@ -8,6 +9,7 @@ import time
 power_mgmt_1 = 0x6b
 power_mgmt_2 = 0x6c
 
+#reading a byte
 def read_byte(adr):
     return bus.read_byte_data(address, adr)
 
