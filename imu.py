@@ -1,9 +1,9 @@
 #!/usr/bin/python
 
-
 import smbus
 import math
 import time
+from os import system
 
 # Power management registers
 power_mgmt_1 = 0x6b
@@ -70,3 +70,4 @@ def run_imu():
 		print "y rotation: " , get_y_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled)
 
 		time.sleep(0.5)
+		system('clear')
