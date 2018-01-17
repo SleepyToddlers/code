@@ -49,8 +49,8 @@ def get_gyro_zout():
 	return (read_word_2c(0x47) / 131)
 
 def print_gyro():
-	print("x: ", "{0:.4f}".format(get_gyro_xout()), " | ",)
-	      "y: ", "{0:.4f}".format(get_gyro_yout()), " | ",)
+	print("x: ", "{0:.4f}".format(get_gyro_xout()), " | ",
+	      "y: ", "{0:.4f}".format(get_gyro_yout()), " | ",
 		  "z: ", "{0:.4f}".format(get_gyro_zout()), " | ")
 
 '''
