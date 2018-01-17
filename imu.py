@@ -1,10 +1,10 @@
 #!/usr/bin/python
-
+#make sure to run the initialize_imu() function before running any of the addresses otherwise the code will error out.
 import smbus
 import math
 import time
 from os import system
-
+import os.path
 
 #reading a byte
 def read_byte(adr):
@@ -76,6 +76,19 @@ def get_current_x_rotation():
 def get_current_y_rotation():
 	return get_y_rotation(get_accel_xout_scaled, get_accel_yout_scaled, get_accel_zout_scaled)
 
+def write_data_to_file():
+	filename = "Data.txt"
+	with open(filename,"w") as datafile
+		temp_datapoints = 1000
+		temp_counter =0
+		while temp_counter<temp_datapoints
+			temp_counter += 1
+			time.sleep(0.1)
+			datafile.write(get_current_x_rotation())
+			datafile.write(',')
+			datafile.write(get_current_y_rotation())
+			datafile.write('\n')
+		
 	
 	
 	
@@ -89,37 +102,53 @@ def initialize_imu():
 
 	# Now wake the 6050 up as it starts in sleep mode
 	bus.write_byte_data(address, power_mgmt_1, 0)
+<<<<<<< HEAD
 
 '''	
+=======
+	
+<<<<<<< HEAD
+
+def run_imu:
+=======
+>>>>>>> a24115f2ccbb58d0636877a01ea0b6ea94d278ae
 def run_imu():
+>>>>>>> 91242946d16cfd5e5f91299bed7da8544638a634
 	
 	initialize_imu()
 	
-	while True:
-		time.sleep(0.1)
-		gyro_xout = read_word_2c(0x43)
-		gyro_yout = read_word_2c(0x45)
-		gyro_zout = read_word_2c(0x47)
+	write_data_to_file()
+	
+	# while True:
+		# time.sleep(0.1)
+		# gyro_xout = read_word_2c(0x43)
+		# gyro_yout = read_word_2c(0x45)
+		# gyro_zout = read_word_2c(0x47)
 
-		print "gyro_xout : ", gyro_xout, " scaled: ", (gyro_xout / 131)
-		print "gyro_yout : ", gyro_yout, " scaled: ", (gyro_yout / 131)
-		print "gyro_zout : ", gyro_zout, " scaled: ", (gyro_zout / 131)
+		# print "gyro_xout : ", gyro_xout, " scaled: ", (gyro_xout / 131)
+		# print "gyro_yout : ", gyro_yout, " scaled: ", (gyro_yout / 131)
+		# print "gyro_zout : ", gyro_zout, " scaled: ", (gyro_zout / 131)
 
-		accel_xout = read_word_2c(0x3b)
-		accel_yout = read_word_2c(0x3d)
-		accel_zout = read_word_2c(0x3f)
+		# accel_xout = read_word_2c(0x3b)
+		# accel_yout = read_word_2c(0x3d)
+		# accel_zout = read_word_2c(0x3f)
 
-		accel_xout_scaled = accel_xout / 16384.0
-		accel_yout_scaled = accel_yout / 16384.0
-		accel_zout_scaled = accel_zout / 16384.0
+		# accel_xout_scaled = accel_xout / 16384.0
+		# accel_yout_scaled = accel_yout / 16384.0
+		# accel_zout_scaled = accel_zout / 16384.0
 
-		print "accel_xout: ", accel_xout, " scaled: ", accel_xout_scaled
-		print "accel_yout: ", accel_yout, " scaled: ", accel_yout_scaled
-		print "accel_zout: ", accel_zout, " scaled: ", accel_zout_scaled
+		# print "accel_xout: ", accel_xout, " scaled: ", accel_xout_scaled
+		# print "accel_yout: ", accel_yout, " scaled: ", accel_yout_scaled
+		# print "accel_zout: ", accel_zout, " scaled: ", accel_zout_scaled
 
-		print "x rotation: " , get_x_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled)
-		print "y rotation: " , get_y_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled)
+		# print "x rotation: " , get_x_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled)
+		# print "y rotation: " , get_y_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled)
 
+<<<<<<< HEAD
 		time.sleep(0.5)
 		system('clear')
 '''
+=======
+		# time.sleep(0.5)
+		# system('clear')
+>>>>>>> a24115f2ccbb58d0636877a01ea0b6ea94d278ae
