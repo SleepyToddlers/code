@@ -76,13 +76,15 @@ def get_current_x_rotation():
 def get_current_y_rotation():
 	return get_y_rotation(get_accel_xout_scaled, get_accel_yout_scaled, get_accel_zout_scaled)
 
-def initialize_imu():
-	# Power management registers
-	power_mgmt_1 = 0x6b
-	power_mgmt_2 = 0x6c
+'''
+	Initialize the accelerometer for use
+'''
+# Power management registers
+power_mgmt_1 = 0x6b
+power_mgmt_2 = 0x6c
 
-	bus = smbus.SMBus(1) # or bus = smbus.SMBus(1) for Revision 2 boards
-	address = 0x68       # This is the address value read via the i2cdetect command
+bus = smbus.SMBus(1) # or bus = smbus.SMBus(1) for Revision 2 boards
+address = 0x68       # This is the address value read via the i2cdetect command
 
-	# Now wake the 6050 up as it starts in sleep mode
-
+# Now wake the 6050 up as it starts in sleep mode
+print('IMU Initialized')
