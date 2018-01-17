@@ -36,7 +36,7 @@ def get_accel_zout():
 def print_accel():
 	print("x: ", get_accel_xout(), " | ",
 	      "y: ", get_accel_yout(), " | ",
-		  "z: ", get_gaccel_zout(), " | ")
+		  "z: ", get_accel_zout(), " | ")
 
 ''' X,Y,Z Gyroscope Output Functions ---------------------------------------------------- '''
 def get_gyro_xout():
@@ -49,7 +49,7 @@ def get_gyro_zout():
 	return (read_word_2c(0x47) / 131)
 
 def print_gyro():
-	print("x: ", get_gryo_xout(), " | ",
+	print("x: ", get_gyro_xout(), " | ",
 	      "y: ", get_gyro_yout(), " | ",
 		  "z: ", get_gyro_zout(), " | ")
 
