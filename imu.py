@@ -71,10 +71,10 @@ def get_gyro_zout_scaled():
 	return (get_gyro_zout/131)
 	
 def get_current_x_rotation():
-	return get_x_rotation(get_accel_xout_scaled, get_accel_yout_scaled, get_accel_zout_scaled)
+	return get_x_rotation(get_accel_xout_scaled(), get_accel_yout_scaled(), get_accel_zout_scaled())
 
 def get_current_y_rotation():
-	return get_y_rotation(get_accel_xout_scaled, get_accel_yout_scaled, get_accel_zout_scaled)
+	return get_y_rotation(get_accel_xout_scaled(), get_accel_yout_scaled(), get_accel_zout_scaled())
 
 '''
 	Initialize the accelerometer for use
