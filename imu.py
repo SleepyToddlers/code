@@ -1,12 +1,9 @@
-#!/usr/bin/python
-#make sure to run the initialize_imu() function before running any of the addresses otherwise the code will error out.
+# External Libraries
 import smbus
 import math
 import time
-from os import system
-import os.path
 
-#reading a byte
+''' Reading / Setup Functions ---------------------------------------------------- '''
 def read_byte(adr):
     return bus.read_byte_data(address, adr)
 
@@ -26,6 +23,27 @@ def read_word_2c(adr):
 def dist(a,b):
     return math.sqrt((a*a)+(b*b))
 
+''' X,Y,Z Accel Output Functions ---------------------------------------------------- '''
+def get_accel_xout():
+	return (read_word_2c(0x3b) / 16384.0)
+
+def get_accel_yout():
+	return (read_word_2c(0x3d) / 16384.0)
+
+def get_accel_zout():
+	return (read_word_2c(0x3f) / 16384.0)
+
+''' X,Y,Z Gyroscope Output Functions ---------------------------------------------------- '''
+def get_gyro_xout():
+	return (read_word_2c(0x43) / 131)
+
+def get_gyro_yout():
+	return (read_word_2c(0x45) / 131)
+
+def get_gyro_zout():
+	return (read_word_2c(0x47) / 131)
+
+'''
 def get_y_rotation(x,y,z):
     radians = math.atan2(x, dist(y,z))
     return -math.degrees(radians)
@@ -34,57 +52,46 @@ def get_x_rotation(x,y,z):
     radians = math.atan2(y, dist(x,z))
     return math.degrees(radians)
 
-def get_accel_xout():
-	return read_word_2c(0x3b)
-	
-def get_accel_yout():
-	return read_word_2c(0x3d)
-	
-def get_accel_zout():
-	return read_word_2c(0x3f)
 
-def get_accel_xout_scaled():
-	return (get_accel_xout / 16384.0)
-	
-def get_accel_yout_scaled():
-	return (get_accel_yout / 16384.0)
-	
-def get_accel_zout_scaled():
-	return (get_accel_zout / 16384.0)
+while True:
+    time.sleep(0.1)
+    gyro_xout = read_word_2c(0x43)
+    gyro_yout = read_word_2c(0x45)
+    gyro_zout = read_word_2c(0x47)
 
-def get_gyro_xout():
-	return read_word_2c(0x43)
-	
-def get_gyro_yout():
-	return read_word_2c(0x45)
-	
-def get_gyro_zout():
-	return read_word_2c(0x47)
-	
-def get_gyro_xout_scaled():
-	return (get_gyro_xout/131)
-	
-def get_gyro_yout_scaled():
-	return (get_gyro_yout/131)
-	
-def get_gyro_zout_scaled():
-	return (get_gyro_zout/131)
-	
-def get_current_x_rotation():
-	return get_x_rotation(get_accel_xout_scaled(), get_accel_yout_scaled(), get_accel_zout_scaled())
+    print "gyro_xout : ", gyro_xout, " scaled: ", (gyro_xout / 131)
+    print "gyro_yout : ", gyro_yout, " scaled: ", (gyro_yout / 131)
+    print "gyro_zout : ", gyro_zout, " scaled: ", (gyro_zout / 131)
 
-def get_current_y_rotation():
-	return get_y_rotation(get_accel_xout_scaled(), get_accel_yout_scaled(), get_accel_zout_scaled())
+    accel_xout = read_word_2c(0x3b)
+    accel_yout = read_word_2c(0x3d)
+    accel_zout = read_word_2c(0x3f)
+
+    accel_xout_scaled = accel_xout / 16384.0
+    accel_yout_scaled = accel_yout / 16384.0
+    accel_zout_scaled = accel_zout / 16384.0
+
+    print "accel_xout: ", accel_xout, " scaled: ", accel_xout_scaled
+    print "accel_yout: ", accel_yout, " scaled: ", accel_yout_scaled
+    print "accel_zout: ", accel_zout, " scaled: ", accel_zout_scaled
+
+    print "x rotation: " , get_x_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled)
+    print "y rotation: " , get_y_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled)
+
+    time.sleep(0.5)
+'''
 
 '''
-	Initialize the accelerometer for use
+	Begin the initialization of the accelerometer and set up variables
 '''
+
 # Power management registers
 power_mgmt_1 = 0x6b
 power_mgmt_2 = 0x6c
+
 
 bus = smbus.SMBus(1) # or bus = smbus.SMBus(1) for Revision 2 boards
 address = 0x68       # This is the address value read via the i2cdetect command
 
 # Now wake the 6050 up as it starts in sleep mode
-print('IMU Initialized')
+bus.write_byte_data(address, power_mgmt_1, 0)
