@@ -1,9 +1,10 @@
 import sys
 import imu
 import ECGMod
-import EMGMod
 import forceMod
 import soundMod
+import temperatureMod
+import pulseOxMod
 
 def main():
 	run_imu()
