@@ -76,22 +76,6 @@ def get_current_x_rotation():
 def get_current_y_rotation():
 	return get_y_rotation(get_accel_xout_scaled, get_accel_yout_scaled, get_accel_zout_scaled)
 
-def write_data_to_file():
-	filename = "Data.txt"
-	with open(filename,"w") as datafile
-		temp_datapoints = 1000
-		temp_counter =0
-		while temp_counter<temp_datapoints
-			temp_counter += 1
-			time.sleep(0.1)
-			datafile.write(get_current_x_rotation())
-			datafile.write(',')
-			datafile.write(get_current_y_rotation())
-			datafile.write('\n')
-		
-	
-	
-	
 def initialize_imu():
 	# Power management registers
 	power_mgmt_1 = 0x6b
@@ -101,8 +85,6 @@ def initialize_imu():
 	address = 0x68       # This is the address value read via the i2cdetect command
 
 	# Now wake the 6050 up as it starts in sleep mode
-	bus.write_byte_data(address, power_mgmt_1, 0)
-
 
 
 def run_imu():
@@ -135,5 +117,4 @@ def run_imu():
 
 		# print "x rotation: " , get_x_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled)
 		# print "y rotation: " , get_y_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled)
-
 
