@@ -1,11 +1,10 @@
 #!/usr/bin/python
+# External Libraries
 import smbus
 import math
 import time
-from os import system
-import os.path
 
-#reading a byte
+''' Reading / Setup Functions ---------------------------------------------------- '''
 def read_byte(adr):
     return bus.read_byte_data(address, adr)
 
@@ -25,6 +24,37 @@ def read_word_2c(adr):
 def dist(a,b):
     return math.sqrt((a*a)+(b*b))
 
+''' X,Y,Z Accel Output Functions ---------------------------------------------------- '''
+def get_accel_xout():
+	return (read_word_2c(0x3b) / 16384.0)
+
+def get_accel_yout():
+	return (read_word_2c(0x3d) / 16384.0)
+
+def get_accel_zout():
+	return (read_word_2c(0x3f) / 16384.0)
+
+def print_accel():
+	print("x: ", "{0:.4f}".format(get_accel_xout()), " | ",
+	      "y: ", "{0:.4f}".format(get_accel_yout()), " | ",
+		  "z: ", "{0:.4f}".format(get_accel_zout()), " | ")
+
+''' X,Y,Z Gyroscope Output Functions ---------------------------------------------------- '''
+def get_gyro_xout():
+	return (read_word_2c(0x43) / 131)
+
+def get_gyro_yout():
+	return (read_word_2c(0x45) / 131)
+
+def get_gyro_zout():
+	return (read_word_2c(0x47) / 131)
+
+def print_gyro():
+	print("x: ", "{0:.4f}".format(get_gyro_xout()), " | ",
+	      "y: ", "{0:.4f}".format(get_gyro_yout()), " | ",
+		  "z: ", "{0:.4f}".format(get_gyro_zout()), " | ")
+
+
 def get_y_rotation(x,y,z):
     radians = math.atan2(x, dist(y,z))
     return -math.degrees(radians)
@@ -33,23 +63,13 @@ def get_x_rotation(x,y,z):
     radians = math.atan2(y, dist(x,z))
     return math.degrees(radians)
 
-def get_accel_xout():
-	return read_word_2c(0x3b)
-	
-def get_accel_yout():
-	return read_word_2c(0x3d)
-	
-def get_accel_zout():
-	return read_word_2c(0x3f)
+'''
+	Begin the initialization of the accelerometer and set up variables
+'''
 
-def get_accel_xout_scaled():
-	return (get_accel_xout / 16384.0)
-	
-def get_accel_yout_scaled():
-	return (get_accel_yout / 16384.0)
-	
-def get_accel_zout_scaled():
-	return (get_accel_zout / 16384.0)
+# Power management registers
+power_mgmt_1 = 0x6b
+power_mgmt_2 = 0x6c
 
 def get_gyro_xout():
 	return read_word_2c(0x43)
@@ -80,15 +100,36 @@ def write_data_to_file():
 	with open(filename,"w") as datafile
 		temp_datapoints = 1000
 		temp_counter =0
+		datafile.write("gyro_xout")
+		datafile.write(',')
+		datafile.write("gyro_yout")
+		datafile.write(',')
+		datafile.write("gyro_zout")
+		datafile.write(',')		
+		datafile.write("accel_xout")
+		datafile.write(',')
+		datafile.write("accel_yout")
+		datafile.write(',')
+		datafile.write("accel_zout")
+		datafile.write('\n')
 		while temp_counter<temp_datapoints
 			temp_counter += 1
-			time.sleep(0.1)
-			datafile.write(get_current_x_rotation())
+			time.sleep(0.05)
+			datafile.write("{0:.4f}".format(get_gyro_xout()))
 			datafile.write(',')
-			datafile.write(get_current_y_rotation())
+			datafile.write("{0:.4f}".format(get_gyro_yout()))
+			datafile.write(',')
+			datafile.write("{0:.4f}".format(get_gyro_zout()))
+			datafile.write(',')
+			datafile.write("{0:.4f}".format(get_accel_xout()))
+			datafile.write(',')
+			datafile.write("{0:.4f}".format(get_accel_yout()))
+			datafile.write(',')
+			datafile.write("{0:.4f}".format(get_accel_zout()))
 			datafile.write('\n')
 		
-	
+
+		
 	
 	
 #initializing imu stuff needed in order to have the bus system work
