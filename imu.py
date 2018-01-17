@@ -102,7 +102,6 @@ def initialize_imu():
 
 	# Now wake the 6050 up as it starts in sleep mode
 	bus.write_byte_data(address, power_mgmt_1, 0)
-<<<<<<< HEAD
 
 '''	
 =======
