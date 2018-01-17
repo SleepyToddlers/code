@@ -95,11 +95,16 @@ def get_current_x_rotation():
 def get_current_y_rotation():
 	return get_y_rotation(get_accel_xout_scaled, get_accel_yout_scaled, get_accel_zout_scaled)
 
+#note that for the data, the VCC is in the upper left corner for al of these
 def write_data_to_file():
-	filename = "Data.txt"
+	filename = "45Down.txt"
 	with open(filename,"w") as datafile:
 		temp_datapoints = 1000
 		temp_counter =0
+		datafile.write("comment")
+		datafile.write(',')
+		datafile.write("45 degrees Down")
+		datafile.write('\n')
 		datafile.write("gyro_xout")
 		datafile.write(',')
 		datafile.write("gyro_yout")
