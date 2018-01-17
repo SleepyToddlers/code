@@ -102,7 +102,8 @@ def initialize_imu():
 
 	# Now wake the 6050 up as it starts in sleep mode
 	bus.write_byte_data(address, power_mgmt_1, 0)
-	
+
+
 
 def run_imu():
 	
@@ -135,5 +136,4 @@ def run_imu():
 		# print "x rotation: " , get_x_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled)
 		# print "y rotation: " , get_y_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled)
 
-		# time.sleep(0.5)
-		# system('clear')
+
