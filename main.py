@@ -3,11 +3,11 @@ import imu
 import ECGMod
 import forceMod
 import soundMod
-import temperatureMod
-import pulseOxMod
+import TemperatureMod
+import PulseOxMod
 
 def main():
-	run_imu()
+	imu.run_imu()
 
 
 if __name__ == '__main__':

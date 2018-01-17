@@ -97,7 +97,7 @@ def get_current_y_rotation():
 
 def write_data_to_file():
 	filename = "Data.txt"
-	with open(filename,"w") as datafile
+	with open(filename,"w") as datafile:
 		temp_datapoints = 1000
 		temp_counter =0
 		datafile.write("gyro_xout")
@@ -112,7 +112,7 @@ def write_data_to_file():
 		datafile.write(',')
 		datafile.write("accel_zout")
 		datafile.write('\n')
-		while temp_counter<temp_datapoints
+		while temp_counter<temp_datapoints:
 			temp_counter += 1
 			time.sleep(0.05)
 			datafile.write("{0:.4f}".format(get_gyro_xout()))
@@ -146,8 +146,6 @@ bus.write_byte_data(address, power_mgmt_1, 0)
 
 
 def run_imu():
-	
-	initialize_imu()
 	
 	write_data_to_file()
 	
