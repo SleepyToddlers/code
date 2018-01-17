@@ -34,52 +34,52 @@ def get_x_rotation(x,y,z):
     radians = math.atan2(y, dist(x,z))
     return math.degrees(radians)
 
-def get_accel_xout:
+def get_accel_xout():
 	return read_word_2c(0x3b)
 	
-def get_accel_yout:
+def get_accel_yout():
 	return read_word_2c(0x3d)
 	
-def get_accel_zout:
+def get_accel_zout():
 	return read_word_2c(0x3f)
 
-def get_accel_xout_scaled:
+def get_accel_xout_scaled():
 	return (get_accel_xout / 16384.0)
 	
-def get_accel_yout_scaled:
+def get_accel_yout_scaled():
 	return (get_accel_yout / 16384.0)
 	
-def get_accel_zout_scaled:
+def get_accel_zout_scaled():
 	return (get_accel_zout / 16384.0)
 
-def get_gyro_xout:
+def get_gyro_xout():
 	return read_word_2c(0x43)
 	
-def get_gyro_yout:
+def get_gyro_yout():
 	return read_word_2c(0x45)
 	
-def get_gyro_zout:
+def get_gyro_zout():
 	return read_word_2c(0x47)
 	
-def get_gyro_xout_scaled:
+def get_gyro_xout_scaled():
 	return (get_gyro_xout/131)
 	
-def get_gyro_yout_scaled:
+def get_gyro_yout_scaled():
 	return (get_gyro_yout/131)
 	
-def get_gyro_zout_scaled:
+def get_gyro_zout_scaled():
 	return (get_gyro_zout/131)
 	
-def get_current_x_rotation:
+def get_current_x_rotation():
 	return get_x_rotation(get_accel_xout_scaled, get_accel_yout_scaled, get_accel_zout_scaled)
 
-def get_current_y_rotation:
+def get_current_y_rotation():
 	return get_y_rotation(get_accel_xout_scaled, get_accel_yout_scaled, get_accel_zout_scaled)
 
 	
 	
 	
-def initialize_imu:
+def initialize_imu():
 	# Power management registers
 	power_mgmt_1 = 0x6b
 	power_mgmt_2 = 0x6c
@@ -90,7 +90,7 @@ def initialize_imu:
 	# Now wake the 6050 up as it starts in sleep mode
 	bus.write_byte_data(address, power_mgmt_1, 0)
 	
-def run_imu:
+def run_imu():
 	
 	initialize_imu()
 	
