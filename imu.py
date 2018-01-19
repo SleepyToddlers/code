@@ -80,11 +80,11 @@ def get_sleep_position():
     x_roll = get_x_roll() # Get current roll angle
 
     # Run scenarios to determine position
-    if  -45 < x_roll < 45 # Back
+    if  -45 < x_roll < 45: # Back
         print(x_roll, '|Back')
-    elif 45 <= x_roll <= 135 # Left Side
+    elif 45 <= x_roll <= 135: # Left Side
         print(x_roll, '|Left Side')
-    elif -135 <= x_roll <= -45 # Right Side
+    elif -135 <= x_roll <= -45: # Right Side
         print(x_roll, '|Right Side')
     else: # Back
         print(x_roll, '|Stomach')
