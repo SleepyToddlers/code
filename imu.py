@@ -65,14 +65,14 @@ def get_x_rotation(x,y,z):
 
 ''' Print the rotation data '''
 def print_x_rotation():
-    return str(get_x_rotation(get_accel_xout()(), 
+    return get_x_rotation(get_accel_xout()(), 
                               get_accel_yout(), 
-                              get_accel_zout()))
+                              get_accel_zout())
 
 def print_y_rotation():
-    return str(get_y_rotation(get_accel_xout()(), 
+    return get_y_rotation(get_accel_xout()(), 
                               get_accel_yout(), 
-                              get_accel_zout()))
+                              get_accel_zout())
 
 
 '''
