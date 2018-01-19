@@ -50,10 +50,13 @@ def get_gyro_zout():
 	return (read_word_2c(0x47) / 131)
 
 def print_gyro():
-	print("x: ", "{0:.4f}".format(get_gyro_xout()), " | ",
-	      "y: ", "{0:.4f}".format(get_gyro_yout()), " | ",
-		  "z: ", "{0:.4f}".format(get_gyro_zout()), " | ")
+	return("{0:.4f}".format(get_gyro_xout()), "|",
+	       "{0:.4f}".format(get_gyro_yout()), "|",
+		   "{0:.4f}".format(get_gyro_zout()), "\n")
 
+
+
+''' Equations for rotation data '''
 
 def get_y_rotation(x,y,z):
     radians = math.atan2(x, dist(y,z))
@@ -62,6 +65,85 @@ def get_y_rotation(x,y,z):
 def get_x_rotation(x,y,z):
     radians = math.atan2(y, dist(x,z))
     return math.degrees(radians)
+
+
+def get_x_roll():
+    radians = math.atan2(get_accel_xout(),
+                         get_accel_zout())
+
+    return math.degrees(radians)
+
+def get_y_roll():
+    radians = math.atan2(get_accel_yout(),
+                         get_accel_zout())
+
+    return math.degrees(radians)
+
+# Green dot points up towards head
+def get_sleep_position():
+    x_roll = get_x_roll() # Get current roll angle
+
+    # Run scenarios to determine position
+    if  -45 < x_roll < 45: # Back
+        print(x_roll, '|Back')
+    elif 45 <= x_roll <= 135: # Left Side
+        print(x_roll, '|Left Side')
+    elif -135 <= x_roll <= -45: # Right Side
+        print(x_roll, '|Right Side')
+    else: # Back
+        print(x_roll, '|Stomach')
+
+
+
+''' Roll = atan2(Y, Z) * 180/PI; '''
+''' Pitch = atan2(X, sqrt(Y*Y + Z*Z)) * 180/PI; '''
+
+''' Print the rotation data '''
+def print_x_rotation():
+    temp = get_x_rotation(get_accel_xout(), 
+                          get_accel_yout(), 
+                          get_accel_zout())
+
+    return '{0:.4f}'.format(temp)
+
+def print_y_rotation():
+    temp = get_y_rotation(get_accel_xout(), 
+                          get_accel_yout(), 
+                          get_accel_zout())
+
+    return ''.join('{0:.4f}'.format(temp))
+
+def print_rotation():
+    return print_x_rotation(), "|", print_y_rotation()
+
+'''
+while True:
+    time.sleep(0.1)
+    gyro_xout = read_word_2c(0x43)
+    gyro_yout = read_word_2c(0x45)
+    gyro_zout = read_word_2c(0x47)
+
+    print "gyro_xout : ", gyro_xout, " scaled: ", (gyro_xout / 131)
+    print "gyro_yout : ", gyro_yout, " scaled: ", (gyro_yout / 131)
+    print "gyro_zout : ", gyro_zout, " scaled: ", (gyro_zout / 131)
+
+    accel_xout = read_word_2c(0x3b)
+    accel_yout = read_word_2c(0x3d)
+    accel_zout = read_word_2c(0x3f)
+
+    accel_xout_scaled = accel_xout / 16384.0
+    accel_yout_scaled = accel_yout / 16384.0
+    accel_zout_scaled = accel_zout / 16384.0
+
+    print "accel_xout: ", accel_xout, " scaled: ", accel_xout_scaled
+    print "accel_yout: ", accel_yout, " scaled: ", accel_yout_scaled
+    print "accel_zout: ", accel_zout, " scaled: ", accel_zout_scaled
+
+    print "x rotation: " , get_x_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled)
+    print "y rotation: " , get_y_rotation(accel_xout_scaled, accel_yout_scaled, accel_zout_scaled)
+
+    time.sleep(0.5)
+'''
 
 '''
 	Begin the initialization of the accelerometer and set up variables
