@@ -63,6 +63,20 @@ def get_x_rotation(x,y,z):
     radians = math.atan2(y, dist(x,z))
     return math.degrees(radians)
 
+def get_roll():
+    # Get teh radians
+    temp = math.atan2(get_accel_yout(),
+                      get_accel_zout())
+
+    # convert to degrees
+    temp = temp * 180/math.pi
+
+    # output
+    reurn '{0:.4f}'.format(temp)
+
+''' Roll = atan2(Y, Z) * 180/PI; '''
+''' Pitch = atan2(X, sqrt(Y*Y + Z*Z)) * 180/PI; '''
+
 ''' Print the rotation data '''
 def print_x_rotation():
     temp = get_x_rotation(get_accel_xout(), 
