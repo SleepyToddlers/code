@@ -65,16 +65,18 @@ def get_x_rotation(x,y,z):
 
 ''' Print the rotation data '''
 def print_x_rotation():
-    return get_x_rotation(get_accel_xout(), 
-                              get_accel_yout(), 
-                              get_accel_zout())
+    temp = get_x_rotation(get_accel_xout(), 
+                          get_accel_yout(), 
+                          get_accel_zout())
+
+    return '{0:.4f}'.format(temp)
 
 def print_y_rotation():
-    return get_y_rotation(get_accel_xout(), 
-                              get_accel_yout(), 
-                              get_accel_zout())
+    temp = get_y_rotation(get_accel_xout(), 
+                          get_accel_yout(), 
+                          get_accel_zout())
 
-
+    return '{0:.4f}'.format(temp)
 '''
 while True:
     time.sleep(0.1)
