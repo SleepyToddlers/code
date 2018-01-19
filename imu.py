@@ -77,6 +77,10 @@ def print_y_rotation():
                           get_accel_zout())
 
     return '{0:.4f}'.format(temp)
+
+def print_rotation()
+    return print_x_rotation(), "|", print_y_rotation()
+
 '''
 while True:
     time.sleep(0.1)
