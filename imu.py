@@ -51,7 +51,7 @@ def get_gyro_zout():
 def print_gyro():
 	print("x: ", "{0:.4f}".format(get_gyro_xout()), " | ",
 	      "y: ", "{0:.4f}".format(get_gyro_yout()), " | ",
-		  "z: ", "{0:.4f}".format(get_gyro_zout()), " | ")
+		  "z: ", "{0:.4f}".format(get_gyro_zout()), "\n")
 
 '''
 def get_y_rotation(x,y,z):
