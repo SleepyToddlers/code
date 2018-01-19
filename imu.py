@@ -72,7 +72,7 @@ def get_roll():
     temp = temp * 180/math.pi
 
     # output
-    reurn '{0:.4f}'.format(temp)
+    return '{0:.4f}'.format(temp)
 
 ''' Roll = atan2(Y, Z) * 180/PI; '''
 ''' Pitch = atan2(X, sqrt(Y*Y + Z*Z)) * 180/PI; '''
