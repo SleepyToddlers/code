@@ -53,7 +53,8 @@ def print_gyro():
 	       "{0:.4f}".format(get_gyro_yout()), "|",
 		   "{0:.4f}".format(get_gyro_zout()), "\n")
 
-'''
+
+''' Equations for rotation data '''
 def get_y_rotation(x,y,z):
     radians = math.atan2(x, dist(y,z))
     return -math.degrees(radians)
@@ -62,7 +63,19 @@ def get_x_rotation(x,y,z):
     radians = math.atan2(y, dist(x,z))
     return math.degrees(radians)
 
+''' Print the rotation data '''
+def print_x_rotation():
+    return str(get_x_rotation(accel_xout_scaled, 
+                              accel_yout_scaled, 
+                              accel_zout_scaled))
 
+def print_y_rotation():
+    return str(get_y_rotation(accel_xout_scaled, 
+                              accel_yout_scaled, 
+                              accel_zout_scaled))
+
+
+'''
 while True:
     time.sleep(0.1)
     gyro_xout = read_word_2c(0x43)
