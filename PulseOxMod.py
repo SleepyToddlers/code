@@ -8,3 +8,10 @@ while True
 	tempIR = mx30.ir
 	tempred = mx30.red
 	#do some calculations here
+	#find the AC RMS of the IR
+	#find the AC RMS of the Red
+	#find DC of Red
+	#find DC of IR
+	#R = (ACrms of Red / DC of Red) / (ACrms of IR / DC of IR)
+	#%SpO2 = 110-25*R
+	
