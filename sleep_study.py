@@ -23,5 +23,7 @@ for i in range(0, MINUTES_TO_RECORD*SAMPLES_PER_SECOND*60):
     output = belt + ',' + temp + ',' + snor + '\n'
     file.write(output)
 
+    print(str(i))
+
 file.close()
 print('All done')
