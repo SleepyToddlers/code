@@ -54,6 +54,14 @@ def write_data_to_file():
 		datafile.write("{0:.4f}".format(get_heart_rate()))
 		datafile.write(',')
 		datafile.write("{0:.4f}".format(current_IR_read))
+		datafile.write(',')
+		datafile.write("{0:.4f}".format(get_IR_DC()))
+		datafile.write(',')
+		datafile.write("{0:.4f}".format(get_IR_RMS))
+		datafile.write(',')
+		datafile.write("{0:.4f}".format(get_red_DC()))
+		datafile.write(',')
+		datafile.write("{0:.4f}".format(get_red_RMS))
 		datafile.write('\n')
 
 
