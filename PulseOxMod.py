@@ -44,6 +44,14 @@ def get_spo2(self):
 #once it hits that period, take the readings since it last hit that threshold and find RMS value
 
 
+def write_data_to_file(self):
+	with open(filename,"a+") as datafile:
+		datafile.write("{0:.4f}".format(get_spo2()))
+		datafile.write(',')
+		datafile.write("{0:.4f}".format(get_heart_rate()))
+		datafile.write('\n')
+
+
 mx30 = max30100.MAX30100()
 mx30.enable_spo2()
 ir_readings = deque([0.0],maxlen = 10000)
@@ -62,6 +70,16 @@ last_heart_beat_time = time.clock()
 current_heart_beat_time = time.clock()
 
 heart_rate_threshold = 40
+
+#opening file for future writes
+
+filename = "pulseOx.txt"
+with open(filename,'w+') as datafile
+	datafile.write("spo2")
+	datafile.write(',')
+	datafile.write("heartrate")
+	datafile.write('\n')
+	
 
 while True:
 	mx30.read_sensor()
@@ -90,8 +108,9 @@ while True:
 	old_SpO2 = SpO2
 	#setting the new SpO2 value to be the average of the two.
 	SpO2 = (old_SpO2+(110.0-25.0*R))/2.0
+	write_data_to_file()
 	
-	last_IR_read = current_IR_read
+	last_IR_read = current_IR_read`
 	last_red_read = current_red_read
 	
 	
