@@ -2,7 +2,7 @@ import Adafruit_ADS1x15
 
 # Variable for sampling, says 128 sps
 # For one min of data 128samples / 1 sec * 60 sec / 1 min 
-MINUTES_TO_RECORD = 0.5
+MINUTES_TO_RECORD = 1
 SAMPLES_PER_SECOND = 128
 
 # Set up the sensors
