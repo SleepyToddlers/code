@@ -3,26 +3,29 @@ from collections import deque
 import time
 
 #getting IR RMS values
-def get_IR_RMS(self):
+def get_IR_RMS():
 	return get_RMS(ir_readings)
 
 #getting red RMS values
-def get_red_RMS(self):
+def get_red_RMS():
 	return get_RMS(red_readings)
 
 #finding RMS values
 def get_RMS(l):
-	return (sum(l**2,0.0)/len(l))**(0.5)
+	return (sum(squared_list(l),0.0)/len(l))**(0.5)
+
+def squared_list(l):
+	return [x**2 for x in l]
 
 #Finding the DC values
-def get_IR_DC(self):
-	avg(ir_readings)
+def get_IR_DC():
+	return avg(ir_readings)
 
 #finding the DC values
-def get_red_DC(self):
-	avg(red_readings)
+def get_red_DC():
+	return avg(red_readings)
 #finding the DC values
-def clear_deques(self):
+def clear_deques():
 	ir_readings.clear()
 	red_readings.clear()
 
@@ -30,11 +33,11 @@ def clear_deques(self):
 def avg(l):
 	return sum(l,0.0)/len(l)
 #statement to find the heart rate
-def get_heart_rate(self):
+def get_heart_rate():
 	return heart_rate
 
 #get the current SpO2 Value
-def get_spo2(self):
+def get_spo2():
 	return SpO2
 	
 #to ensure that rising and falling doesn't affect it, make sure that the previous value is lower.
@@ -44,11 +47,13 @@ def get_spo2(self):
 #once it hits that period, take the readings since it last hit that threshold and find RMS value
 
 
-def write_data_to_file(self):
+def write_data_to_file():
 	with open(filename,"a+") as datafile:
 		datafile.write("{0:.4f}".format(get_spo2()))
 		datafile.write(',')
 		datafile.write("{0:.4f}".format(get_heart_rate()))
+		datafile.write(',')
+		datafile.write("{0:.4f}".format(current_IR_read))
 		datafile.write('\n')
 
 
@@ -69,12 +74,12 @@ SpO2=0
 last_heart_beat_time = time.clock()
 current_heart_beat_time = time.clock()
 
-heart_rate_threshold = 40
+heart_rate_threshold = 10000
 
 #opening file for future writes
 
 filename = "pulseOx.txt"
-with open(filename,'w+') as datafile
+with open(filename,'w+') as datafile:
 	datafile.write("spo2")
 	datafile.write(',')
 	datafile.write("heartrate")
@@ -92,7 +97,7 @@ while True:
 		red_readings.append(current_red_read)
 	
 	#if a heartbeat is detected
-	if current_IR_read > heart_rate_threshold and  last_red_read < current_read_read and last_IR_read < current_IR_read:
+	if current_IR_read > heart_rate_threshold and  last_red_read < current_red_read and last_IR_read < current_IR_read:
 		#change the heart rate
 		last_heart_beat_time = current_heart_beat_time
 		current_heart_beat_time = time.clock()
@@ -110,7 +115,7 @@ while True:
 	SpO2 = (old_SpO2+(110.0-25.0*R))/2.0
 	write_data_to_file()
 	
-	last_IR_read = current_IR_read`
+	last_IR_read = current_IR_read
 	last_red_read = current_red_read
 	
 	
