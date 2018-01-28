@@ -43,6 +43,6 @@ for i in range(0, 1000):
     DC_IR  = sum(ir)/float(len(ir))
     AC_IR  = math.sqrt(sum([i**2 for i in ir])/float(len(ir)))
 
-    SPO2 = math.log10(AC_RED/DC_RED) / math.log10(AC_IR/DC_IR)
+    SPO2 = 110 - 25*math.log10((AC_RED + DC_RED)/DC_RED) / math.log10((AC_IR+DC_IR)/DC_IR)
 
     print(SPO2)
