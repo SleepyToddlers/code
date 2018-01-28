@@ -25,6 +25,9 @@ for i in range(0, 100):
 
 # First loop for amount of times
 for i in range(0, 1000):
+    red.clear()
+    ir.clear()
+
     # To dictate list size
     for j in range(0, 600):
         # Read the sensor
@@ -39,7 +42,7 @@ for i in range(0, 1000):
     AC_RED = math.sqrt(sum([i**2 for i in red])/float(len(red)))
     DC_IR  = sum(ir)/float(len(ir))
     AC_IR  = math.sqrt(sum([i**2 for i in ir])/float(len(ir)))
-    
+
     SPO2 = math.log10(AC_RED/DC_RED) / math.log10(AC_IR/DC_IR)
 
     print(SPO2)
