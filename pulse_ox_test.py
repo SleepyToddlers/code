@@ -10,7 +10,7 @@ mx = max30100.MAX30100()
 # Turn on
 mx.enable_spo2()
 
-mx.set_led_current(led_current_red=4.4, led_current_ir=50.0)
+mx.set_led_current(led_current_red=11.0, led_current_ir=4.4)
 mx.max_buffer_len = 5000
 
 # Variables for buffer
