@@ -37,6 +37,7 @@ while True:
     # Begin the calculations
     if len(mx.buffer_red) == 0:
         # Do nothing
+        pass
     elif len(mx.buffer_red) == 1: # Do stuff
         # Remove the dc offset
         ir_filter.append(mx.buffer_ir[-1] + ALPHA*mx_buffer_ir[-2])
