@@ -22,10 +22,10 @@ DC_IR  = 0
 AC_IR  = 0
 ALPHA = 0.95
 
-w_r_1 = 0.0
-w_r_0 = 0.0
-w_i_1 = 0.0
-w_i_0 = 0.0
+w_r_1 = []
+w_r_0 = []
+w_i_1 = []
+w_i_0 = []
 
 # File for debugging
 file = open('pulse_ox_debug.txt', 'w')
@@ -44,21 +44,31 @@ while True:
         pass
     elif len(mx.buffer_red) == 2: # Get first w
         # Remove the dc offset
-        ir_filter.append(mx.buffer_ir[-1] + ALPHA*mx.buffer_ir[-2])
-        red_filter.append(mx.buffer_red[-1] + ALPHA*mx.buffer_red[-2])
+        #ir_filter.append(mx.buffer_ir[-1] + ALPHA*mx.buffer_ir[-2])
+        #red_filter.append(mx.buffer_red[-1] + ALPHA*mx.buffer_red[-2])
+
+        # Set up w_0
+        w_r_0.append(mx.buffer_red[1] + ALPHA*mx.buffer_red[0])
+        w_i_0.append(mx.buffer_ir[1] + ALPHA*mx.buffer_ir[0])
 
         # Write to file
         file.write(str(mx.red) + ',' + str(mx.ir) + ',' + str(red_filter[-1]) + ',' + str(ir_filter[-1]) + '\n')
-    else:
-        w_r_0 = red_filter[-1]
-        w_i_0 = ir_filter[-1]
+    elif len(mx.buffer_red) > 2:
+        w_r_0.append(mx.buffer_red[-1] + ALPHA*w_r_0[-1])
+        w_i_0.append(mx.buffer_ir[-1] + ALPHA*w_ri_0[-1])
 
-        w_r_1 = mx.buffer_red[-1] + ALPHA*w_r_0
-        w_i_1 = mx.buffer_ir[-1]  + ALPHA*w_i_0
+        red_filter.append(w_r_0[-1] - w_r_o[-2])
+        ir_filter.append(w_i_0[-1] - w_i_o[-2])
+
+        #w_r_0 = red_filter[-1]
+        #w_i_0 = ir_filter[-1]
+
+        #w_r_1 = mx.buffer_red[-1] + ALPHA*w_r_0
+        #w_i_1 = mx.buffer_ir[-1]  + ALPHA*w_i_0
         
         # Calculate the new voltage
-        ir_filter.append(w_i_1-w_i_0)
-        red_filter.append(w_r_1-w_r_0)
+        #ir_filter.append(w_i_1-w_i_0)
+        #red_filter.append(w_r_1-w_r_0)
 
         # Write to file
         file.write(str(mx.red) + ',' + str(mx.ir) + ',' + str(red_filter[-1]) + ',' + str(ir_filter[-1]) + '\n')
