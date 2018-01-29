@@ -51,7 +51,7 @@ while True:
         red_filter.append((mx.buffer_red[-1] + ALPHA*mx_buffer_red[-2])-w_r_0)
 
     # Now see if calibration is done
-    if len(red_filter) > 500
+    if len(red_filter) > 500:
         # Make calculations
         AC_RED = math.sqrt(sum([i**2 for in red_filter]/len(red_filter)))
         AC_IR  = math.sqrt(sum([i**2 for in ir_filter]/len(ir_filter)))
@@ -59,3 +59,5 @@ while True:
         SPO2 = 110 - 25*math.log10(AC_RED)/math.log10(AC_IR)
 
         print(SPO2)
+    else:
+        pass
