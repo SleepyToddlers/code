@@ -22,11 +22,11 @@ def squared_list(l):
 
 #Finding the DC values
 def get_IR_DC():
-	return avg(ir_readings)
+	return avg(dc_ir_readings)
 
 #finding the DC values
 def get_red_DC():
-	return avg(red_readings)
+	return avg(dc_red_readings)
 #finding the DC values
 def clear_deques():
 	ir_readings.clear()
@@ -66,9 +66,9 @@ def write_data_to_file():
 	#	datafile.write(',')
 	#	datafile.write("{0:.4f}".format(get_red_RMS()))
 	#	datafile.write('\n')
-	#print("{0:.4f}".format(get_spo2()))
+	print("{0:.4f}".format(get_spo2()))
 	#print("{0:.4f}".format(current_IR_read-get_IR_DC()))
-	print("{0:.4f}".format(current_red_read - get_red_DC()))
+	#print("{0:.4f}".format(current_red_read - get_red_DC()))
 
 
 buffer_size = 400
@@ -76,6 +76,10 @@ mx30 = max30100.MAX30100()
 mx30.enable_spo2()
 ir_readings = deque([0.0],maxlen = buffer_size)
 red_readings = deque([0.0],maxlen = buffer_size)
+
+dc_buffer_size = 10
+dc_ir_readings = deque([0.0],maxlen = dc_buffer_size)
+dc_red_readings =deque([0.0],maxlen = dc_buffer_size)
 
 current_IR_read =1
 last_IR_read = 1
@@ -112,6 +116,8 @@ while True:
 	if current_IR_read != None and current_red_read != None:
 		ir_readings.append(current_IR_read)
 		red_readings.append(current_red_read)
+		dc_red_readings.append(current_red_read)
+		dc_ir_readings.append(current_IR_read)
 	
 	#if a heartbeat is detected
 	if current_IR_read > heart_rate_threshold and  last_red_read < current_red_read and last_IR_read < current_IR_read:
@@ -126,10 +132,16 @@ while True:
 	#consider putting this into the "heartbeat detected" if statement
 	#R = (ACrms of Red / DC of Red) / (ACrms of IR / DC of IR)
 	#%SpO2 = 110-25*R
-	R = (get_red_RMS() / get_red_DC())/(get_IR_RMS() / get_IR_DC())
+	
+	try:
+		R = (get_red_RMS() / get_red_DC())/(get_IR_RMS() / get_IR_DC())
+	except ZeroDivisionError:
+		R = 0
+		pass
 	old_SpO2 = SpO2
 	#setting the new SpO2 value to be the average of the two.
-	SpO2 = (old_SpO2+(110.0-30.0*R))/2.0
+	#SpO2 = (old_SpO2+(110.0-25.0*R))/2.0
+	SpO2 = (old_SpO2+(105-16*R))/2
 	write_data_to_file()
 	
 	last_IR_read = current_IR_read
