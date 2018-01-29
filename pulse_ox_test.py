@@ -55,8 +55,8 @@ while True:
     if len(red_filter) > 500:
         # Make calculations
         print(len(ir_filter))
-       # AC_RED = math.sqrt(sum([i**2 for in red_filter]/len(red_filter)))
-        #AC_IR  = math.sqrt(sum([i**2 for in ir_filter]/len(ir_filter)))
+        AC_RED = math.sqrt(sum([i**2 for in red_filter]/len(red_filter)))
+        AC_IR  = math.sqrt(sum([i**2 for in ir_filter]/len(ir_filter)))
 
         SPO2 = 110 - 25*math.log10(AC_RED)/math.log10(AC_IR)
 
