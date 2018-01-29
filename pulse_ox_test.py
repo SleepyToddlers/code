@@ -10,7 +10,7 @@ mx = max30100.MAX30100()
 # Turn on
 mx.enable_spo2()
 
-mx.set_led_current(led_current_red=7.6, led_current_ir=50.0)
+mx.set_led_current(led_current_red=4.4, led_current_ir=50.0)
 mx.max_buffer_len = 5000
 
 # Variables for buffer
@@ -53,9 +53,12 @@ while True:
         w_r_0 = red_filter[-1]
         w_i_0 = ir_filter[-1]
 
+        w_r_1 = mx.buffer_red[-1] + ALPHA*w_r_0
+        w_i_1 = mx.buffer_ir[-1]  + ALPHA*w_i_0
+        
         # Calculate the new voltage
-        ir_filter.append((mx.buffer_ir[-1] + ALPHA*mx.buffer_ir[-2])-w_i_0)
-        red_filter.append((mx.buffer_red[-1] + ALPHA*mx.buffer_red[-2])-w_r_0)
+        ir_filter.append(w_i_1-w_i_0)
+        red_filter.append(w_r_1-w_r_0)
 
         # Write to file
         file.write(str(mx.red) + ',' + str(mx.ir) + ',' + str(red_filter[-1]) + ',' + str(ir_filter[-1]) + '\n')
