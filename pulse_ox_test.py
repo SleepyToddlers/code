@@ -41,15 +41,15 @@ while True:
         pass
     elif len(mx.buffer_red) == 1: # Do stuff
         # Remove the dc offset
-        ir_filter.append(mx.buffer_ir[-1] + ALPHA*mx_buffer_ir[-2])
-        red_filter.append(mx.buffer_red[-1] + ALPHA*mx_buffer_red[-2])
+        ir_filter.append(mx.buffer_ir[-1] + ALPHA*mx.buffer_ir[-2])
+        red_filter.append(mx.buffer_red[-1] + ALPHA*mx.buffer_red[-2])
     else:
         w_r_0 = red_filter[-1]
         w_i_0 = ir_filter[-1]
 
         # Calculate the new voltage
-        ir_filter.append((mx.buffer_ir[-1] + ALPHA*mx_buffer_ir[-2])-w_i_0)
-        red_filter.append((mx.buffer_red[-1] + ALPHA*mx_buffer_red[-2])-w_r_0)
+        ir_filter.append((mx.buffer_ir[-1] + ALPHA*mx.buffer_ir[-2])-w_i_0)
+        red_filter.append((mx.buffer_red[-1] + ALPHA*mx.buffer_red[-2])-w_r_0)
 
     # Now see if calibration is done
     if len(red_filter) > 500:
