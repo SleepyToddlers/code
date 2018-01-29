@@ -9,6 +9,9 @@ mx = max30100.MAX30100()
 # Turn on
 mx.enable_spo2()
 
+mx.set_led_current(led_current_red=4.4, led_current_ir=50.0)
+mx.max_buffer_len = 5000
+
 # Variables for buffer
 red = []
 ir = []
@@ -16,33 +19,42 @@ DC_RED = 0
 AC_RED = 0
 DC_IR  = 0
 AC_IR  = 0
+ALPHA = 0.95
 
-# Start reading
-for i in range(0, 100):
-    mx.read_sensor()
+w_r_1 = 0.0
+w_r_0 = 0.0
+w_i_1 = 0.0
+w_i_0 = 0.0
 
-# Wait time to get rid of first part
+# Que
+ir_filter  = deque([0.0],maxlen = 1000)
+red_filter = deque([0.0],maxlen = 1000)
 
 # First loop for amount of times
-for i in range(0, 1000):
-    red.clear()
-    ir.clear()
+while True:
+    mx.read_sensor() # Read the value
 
-    # To dictate list size
-    for j in range(0, 600):
-        # Read the sensor
-        mx.read_sensor()
+    # Begin the calculations
+    if len(mx.buffer_red) = 0
+        # Do nothing
+    elif len(mx.buffer_red) = 1: # Do stuff
+        # Remove the dc offset
+        ir_filter.append(mx.buffer_ir[-1] + ALPHA*mx_buffer_ir[-2])
+        red_filter.append(mx.buffer_red[-1] + ALPHA*mx_buffer_red[-2])
+    else:
+        w_r_0 = red_filter[-1]
+        w_i_0 = ir_filter[-1]
 
-        # Store the value
-        red.append(mx.red)
-        ir.append(mx.ir)
+        # Calculate the new voltage
+        ir_filter.append((mx.buffer_ir[-1] + ALPHA*mx_buffer_ir[-2])-w_i_0)
+        red_filter.append((mx.buffer_red[-1] + ALPHA*mx_buffer_red[-2])-w_r_0)
 
-    # Calculate SPO2
-    DC_RED = sum(red)/float(len(red))
-    AC_RED = math.sqrt(sum([i**2 for i in red])/float(len(red)))
-    DC_IR  = sum(ir)/float(len(ir))
-    AC_IR  = math.sqrt(sum([i**2 for i in ir])/float(len(ir)))
+    # Now see if calibration is done
+    if len(red_filter) > 500
+        # Make calculations
+        AC_RED = math.sqrt(sum([i**2 for in red_filter]/len(red_filter)))
+        AC_IR  = math.sqrt(sum([i**2 for in ir_filter]/len(ir_filter)))
 
-    SPO2 = 110 - 25*math.log10((AC_RED + DC_RED)/DC_RED) / math.log10((AC_IR+DC_IR)/DC_IR)
+        SPO2 = 110 - 25*math.log10(AC_RED)/math.log10(AC_IR)
 
-    print(SPO2)
+        print(SPO2)
