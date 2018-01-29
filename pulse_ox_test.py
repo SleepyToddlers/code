@@ -48,7 +48,7 @@ while True:
         red_filter.append(mx.buffer_red[-1] + ALPHA*mx.buffer_red[-2])
 
         # Write to file
-        file.write(str(ir_filter[-1]) + ',' + str(red_filter[-1]) + '\n')
+        file.write(str(mx.red) + ',' + str(mx.ir) + ',' + str(red_filter[-1]) + ',' + str(ir_filter[-1]) + '\n')
     else:
         w_r_0 = red_filter[-1]
         w_i_0 = ir_filter[-1]
@@ -58,7 +58,7 @@ while True:
         red_filter.append((mx.buffer_red[-1] + ALPHA*mx.buffer_red[-2])-w_r_0)
 
         # Write to file
-        file.write(str(ir_filter[-1]) + ',' + str(red_filter[-1]) + '\n')
+        file.write(str(mx.red) + ',' + str(mx.ir) + ',' + str(red_filter[-1]) + ',' + str(ir_filter[-1]) + '\n')
 
     # Now see if calibration is done
     if len(red_filter) > 500:
