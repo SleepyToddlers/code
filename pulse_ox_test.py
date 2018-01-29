@@ -59,6 +59,6 @@ while True:
 
         SPO2 = 110 - 25*math.log10(AC_RED)/math.log10(AC_IR)
 
-        print('{0:.4f}'.format(SPO2)
+        print('{0:.4f}'.format(SPO2))
     else:
         pass
