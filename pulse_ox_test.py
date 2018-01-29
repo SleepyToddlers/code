@@ -22,8 +22,8 @@ DC_IR  = 0
 AC_IR  = 0
 ALPHA = 0.95
 
-w_r_1 = []
 w_r_0 = []
+w_i_0 = []
 
 # File for debugging
 file = open('pulse_ox_debug.txt', 'w')
@@ -31,6 +31,13 @@ file = open('pulse_ox_debug.txt', 'w')
 # Que
 ir_filter  = deque([0.0],maxlen = 500)
 red_filter = deque([0.0],maxlen = 500)
+
+for x in range(1,300):
+	mx.read_sensor()
+mx.buffer_red.clear()
+mx.buffer_ir.clear()
+
+old_SPO2 = 95
 
 # First loop for amount of times
 while True:
@@ -77,8 +84,8 @@ while True:
         AC_RED = math.sqrt(sum([i**2 for i in red_filter])/len(red_filter))
         AC_IR  = math.sqrt(sum([i**2 for i in ir_filter])/len(ir_filter))
 
-        SPO2 = 110 - 25*math.log10(AC_RED)/math.log10(AC_IR)
-
+        SPO2 = (old_SPO2 + (110 - 25*math.log10(AC_RED)/math.log10(AC_IR)))/2
+        old_SPO2 = SPO2
         print('{0:.0f}'.format(SPO2))
     else:
         pass

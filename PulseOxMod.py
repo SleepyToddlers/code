@@ -1,7 +1,10 @@
+
+
 from __future__ import division
 import max30100
 from collections import deque
 import time
+import math
 
 #getting IR RMS values
 def get_IR_RMS():
@@ -66,18 +69,29 @@ def write_data_to_file():
 	#	datafile.write(',')
 	#	datafile.write("{0:.4f}".format(get_red_RMS()))
 	#	datafile.write('\n')
-	print("{0:.4f}".format(get_spo2()))
-	#print("{0:.4f}".format(current_IR_read-get_IR_DC()))
+	print("{0:.4f}".format(avg(spo2_readings)))
+	#print("{0:.4f}".format(current_IR_read))
+	#print(str(avg(ir_readings)))
+	#print(str(current_IR_read-get_IR_DC()))
 	#print("{0:.4f}".format(current_red_read - get_red_DC()))
+	#print(str(get_IR_RMS()))
+	#print(str(mx30.get_temperature()))
+	#a = str(get_red_DC()) + "    " + str(get_IR_DC())
+	#a = str(get_red_RMS()) + "     " + str(get_IR_RMS())
+	#print(a)
+	mx30.refresh_temperature()
+	#print(str(current_red_read))
 
-
-buffer_size = 400
+buffer_size = 800
 mx30 = max30100.MAX30100()
+mx30.set_led_current(led_current_red =7.6, led_current_ir = 11.0)
+
 mx30.enable_spo2()
 ir_readings = deque([0.0],maxlen = buffer_size)
 red_readings = deque([0.0],maxlen = buffer_size)
+spo2_readings = deque([0.0],maxlen = buffer_size)
 
-dc_buffer_size = 10
+dc_buffer_size = 5
 dc_ir_readings = deque([0.0],maxlen = dc_buffer_size)
 dc_red_readings =deque([0.0],maxlen = dc_buffer_size)
 
@@ -105,9 +119,20 @@ with open(filename,'w+') as datafile:
 	datafile.write(',')
 	datafile.write("heartrate")
 	datafile.write('\n')
-	
+
+for x in range(1,500):
+	mx30.read_sensor()
+mx30.buffer_red.clear()
+mx30.buffer_ir.clear()
+
+section_size = 800
+section_counter =  0
+
+
 
 while True:
+	section_counter +=1
+#	for section in  range(1,400):
 	mx30.read_sensor()
 	current_IR_read = mx30.ir - magic_number
 	current_red_read = mx30.red - magic_number
@@ -128,6 +153,10 @@ while True:
 		detected_heart_rate = 60.0/heart_beat_period
 		#set the heart rate to be the average of the two.
 		heart_rate = (heart_rate+detected_heart_rate) / 2.0
+	mx30.buffer_red.clear()
+	mx30.buffer_ir.clear()
+
+
 		
 	#consider putting this into the "heartbeat detected" if statement
 	#R = (ACrms of Red / DC of Red) / (ACrms of IR / DC of IR)
@@ -135,14 +164,21 @@ while True:
 	
 	try:
 		R = (get_red_RMS() / get_red_DC())/(get_IR_RMS() / get_IR_DC())
+		#R =math.log10(get_red_RMS())/math.log10(get_IR_RMS())
 	except ZeroDivisionError:
-		R = 0
+		print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+		R = 0.5
 		pass
 	old_SpO2 = SpO2
 	#setting the new SpO2 value to be the average of the two.
-	#SpO2 = (old_SpO2+(110.0-25.0*R))/2.0
-	SpO2 = (old_SpO2+(105-16*R))/2
-	write_data_to_file()
+	SpO2 = (old_SpO2+(110.0-25.0*R))/2.0
+	#SpO2 = (old_SpO2+(110-30*R))/2
+	#SpO2 = 110-30*R
+	#SpO2 = (old_SpO2 + SpO2) / 2.0
+	spo2_readings.append(SpO2)
+	if(section_counter > section_size):
+		write_data_to_file()
+		section_counter = 0
 	
 	last_IR_read = current_IR_read
 	last_red_read = current_red_read
