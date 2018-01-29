@@ -35,7 +35,7 @@ while True:
     mx.read_sensor() # Read the value
 
     # Begin the calculations
-    if len(mx.buffer_red) == 0
+    if len(mx.buffer_red) == 0:
         # Do nothing
     elif len(mx.buffer_red) == 1: # Do stuff
         # Remove the dc offset
