@@ -10,7 +10,7 @@ mx = max30100.MAX30100()
 # Turn on
 mx.enable_spo2()
 
-mx.set_led_current(led_current_red=11.0, led_current_ir=4.4)
+mx.set_led_current(led_current_red=7.6, led_current_ir=50.0)
 mx.max_buffer_len = 5000
 
 # Variables for buffer
@@ -26,6 +26,9 @@ w_r_1 = 0.0
 w_r_0 = 0.0
 w_i_1 = 0.0
 w_i_0 = 0.0
+
+# File for debugging
+file = open('pulse_ox_debug.txt' 'w')
 
 # Que
 ir_filter  = deque([0.0],maxlen = 1000)
@@ -43,6 +46,9 @@ while True:
         # Remove the dc offset
         ir_filter.append(mx.buffer_ir[-1] + ALPHA*mx.buffer_ir[-2])
         red_filter.append(mx.buffer_red[-1] + ALPHA*mx.buffer_red[-2])
+
+        # Write to file
+        file.write(str(ir_filter[-1]) + ',' + str(red_filter[-1]) + '\n')
     else:
         w_r_0 = red_filter[-1]
         w_i_0 = ir_filter[-1]
@@ -50,6 +56,9 @@ while True:
         # Calculate the new voltage
         ir_filter.append((mx.buffer_ir[-1] + ALPHA*mx.buffer_ir[-2])-w_i_0)
         red_filter.append((mx.buffer_red[-1] + ALPHA*mx.buffer_red[-2])-w_r_0)
+
+        # Write to file
+        file.write(str(ir_filter[-1]) + ',' + str(red_filter[-1]) + '\n')
 
     # Now see if calibration is done
     if len(red_filter) > 500:
