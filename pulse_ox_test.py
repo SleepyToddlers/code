@@ -31,18 +31,18 @@ w_i_0 = 0.0
 file = open('pulse_ox_debug.txt', 'w')
 
 # Que
-ir_filter  = deque([0.0],maxlen = 1000)
-red_filter = deque([0.0],maxlen = 1000)
+ir_filter  = deque([0.0],maxlen = 500)
+red_filter = deque([0.0],maxlen = 500)
 
 # First loop for amount of times
 while True:
     mx.read_sensor() # Read the value
 
     # Begin the calculations
-    if len(mx.buffer_red) <= 1:
+    if len(mx.buffer_red) == 0:
         # Do nothing
         pass
-    elif len(mx.buffer_red) == 2: # Do stuff
+    elif len(mx.buffer_red) == 1: # Get first w
         # Remove the dc offset
         ir_filter.append(mx.buffer_ir[-1] + ALPHA*mx.buffer_ir[-2])
         red_filter.append(mx.buffer_red[-1] + ALPHA*mx.buffer_red[-2])
@@ -64,13 +64,13 @@ while True:
         file.write(str(mx.red) + ',' + str(mx.ir) + ',' + str(red_filter[-1]) + ',' + str(ir_filter[-1]) + '\n')
 
     # Now see if calibration is done
-    if len(red_filter) > 500:
+    if len(red_filter) > 400:
         # Make calculations
         AC_RED = math.sqrt(sum([i**2 for i in red_filter])/len(red_filter))
         AC_IR  = math.sqrt(sum([i**2 for i in ir_filter])/len(ir_filter))
 
         SPO2 = 110 - 25*math.log10(AC_RED)/math.log10(AC_IR)
 
-        print('{0:.4f}'.format(SPO2))
+        print('{0:.0f}'.format(SPO2))
     else:
         pass
