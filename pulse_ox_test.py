@@ -28,7 +28,7 @@ w_i_1 = 0.0
 w_i_0 = 0.0
 
 # File for debugging
-file = open('pulse_ox_debug.txt' 'w')
+file = open('pulse_ox_debug.txt', 'w')
 
 # Que
 ir_filter  = deque([0.0],maxlen = 1000)
