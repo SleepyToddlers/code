@@ -2,6 +2,7 @@
 import math
 import max30100
 import time
+from collections import deque
 
 # Set up the pulse ox
 mx = max30100.MAX30100()
@@ -53,7 +54,6 @@ while True:
     # Now see if calibration is done
     if len(red_filter) > 500:
         # Make calculations
-        print(len(red_filter))
         AC_RED = math.sqrt(sum([i**2 for in red_filter]/len(red_filter)))
         AC_IR  = math.sqrt(sum([i**2 for in ir_filter]/len(ir_filter)))
 
