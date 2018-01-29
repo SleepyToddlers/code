@@ -55,7 +55,7 @@ while True:
         file.write(str(mx.red) + ',' + str(mx.ir) + ',' + str(red_filter[-1]) + ',' + str(ir_filter[-1]) + '\n')
     elif len(mx.buffer_red) > 2:
         w_r_0.append(mx.buffer_red[-1] + ALPHA*w_r_0[-1])
-        w_i_0.append(mx.buffer_ir[-1] + ALPHA*w_ri_0[-1])
+        w_i_0.append(mx.buffer_ir[-1] + ALPHA*w_i_0[-1])
 
         red_filter.append(w_r_0[-1] - w_r_o[-2])
         ir_filter.append(w_i_0[-1] - w_i_o[-2])
