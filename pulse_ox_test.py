@@ -39,10 +39,10 @@ while True:
     mx.read_sensor() # Read the value
 
     # Begin the calculations
-    if len(mx.buffer_red) == 0:
+    if len(mx.buffer_red) == 1:
         # Do nothing
         pass
-    elif len(mx.buffer_red) == 1: # Get first w
+    elif len(mx.buffer_red) == 2: # Get first w
         # Remove the dc offset
         ir_filter.append(mx.buffer_ir[-1] + ALPHA*mx.buffer_ir[-2])
         red_filter.append(mx.buffer_red[-1] + ALPHA*mx.buffer_red[-2])
