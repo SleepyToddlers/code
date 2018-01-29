@@ -1,14 +1,17 @@
+from __future__ import division
 import max30100
 from collections import deque
 import time
 
 #getting IR RMS values
 def get_IR_RMS():
-	return get_RMS(ir_readings)
+	return get_RMS(ir_readings)-get_IR_DC()
+#	return get_RMS([x-get_IR_DC() for x in ir_readings])
 
 #getting red RMS values
 def get_red_RMS():
-	return get_RMS(red_readings)
+	return get_RMS(red_readings)-get_red_DC()
+#	return get_RMS([x-get_red_DC() for x in red_readings])
 
 #finding RMS values
 def get_RMS(l):
@@ -48,30 +51,34 @@ def get_spo2():
 
 
 def write_data_to_file():
-	with open(filename,"a+") as datafile:
-		datafile.write("{0:.4f}".format(get_spo2()))
-		datafile.write(',')
-		datafile.write("{0:.4f}".format(get_heart_rate()))
-		datafile.write(',')
-		datafile.write("{0:.4f}".format(current_IR_read))
-		datafile.write(',')
-		datafile.write("{0:.4f}".format(get_IR_DC()))
-		datafile.write(',')
-		datafile.write("{0:.4f}".format(get_IR_RMS))
-		datafile.write(',')
-		datafile.write("{0:.4f}".format(get_red_DC()))
-		datafile.write(',')
-		datafile.write("{0:.4f}".format(get_red_RMS))
-		datafile.write('\n')
+	#with open(filename,"a+") as datafile:
+	#	datafile.write("{0:.4f}".format(get_spo2()))
+	#	datafile.write(',')
+	#	datafile.write("{0:.4f}".format(get_heart_rate()))
+	#	datafile.write(',')
+	#	datafile.write("{0:.4f}".format(current_IR_read))
+	#	datafile.write(',')
+	#	datafile.write("{0:.4f}".format(get_IR_DC()))
+	#	datafile.write(',')
+	#	datafile.write("{0:.4f}".format(get_IR_RMS()))
+	#	datafile.write(',')
+	#	datafile.write("{0:.4f}".format(get_red_DC()))
+	#	datafile.write(',')
+	#	datafile.write("{0:.4f}".format(get_red_RMS()))
+	#	datafile.write('\n')
+	#print("{0:.4f}".format(get_spo2()))
+	#print("{0:.4f}".format(current_IR_read-get_IR_DC()))
+	print("{0:.4f}".format(current_red_read - get_red_DC()))
 
 
+buffer_size = 400
 mx30 = max30100.MAX30100()
 mx30.enable_spo2()
-ir_readings = deque([0.0],maxlen = 10000)
-red_readings = deque([0.0],maxlen = 10000)
+ir_readings = deque([0.0],maxlen = buffer_size)
+red_readings = deque([0.0],maxlen = buffer_size)
 
-current_IR_read =0
-last_IR_read = 0
+current_IR_read =1
+last_IR_read = 1
 
 last_red_read = 0
 current_red_read = 0
@@ -82,11 +89,13 @@ SpO2=0
 last_heart_beat_time = time.clock()
 current_heart_beat_time = time.clock()
 
-heart_rate_threshold = 10000
+heart_rate_threshold = 8000.0
+
+magic_number = 0
 
 #opening file for future writes
 
-filename = "pulseOx.txt"
+filename = "PulseOxMod.txt"
 with open(filename,'w+') as datafile:
 	datafile.write("spo2")
 	datafile.write(',')
@@ -96,8 +105,8 @@ with open(filename,'w+') as datafile:
 
 while True:
 	mx30.read_sensor()
-	current_IR_read = mx30.ir
-	current_red_read = mx30.red
+	current_IR_read = mx30.ir - magic_number
+	current_red_read = mx30.red - magic_number
 	
 	#append readings to the array
 	if current_IR_read != None and current_red_read != None:
@@ -120,7 +129,7 @@ while True:
 	R = (get_red_RMS() / get_red_DC())/(get_IR_RMS() / get_IR_DC())
 	old_SpO2 = SpO2
 	#setting the new SpO2 value to be the average of the two.
-	SpO2 = (old_SpO2+(110.0-25.0*R))/2.0
+	SpO2 = (old_SpO2+(110.0-30.0*R))/2.0
 	write_data_to_file()
 	
 	last_IR_read = current_IR_read
