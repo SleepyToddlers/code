@@ -24,8 +24,6 @@ ALPHA = 0.95
 
 w_r_1 = []
 w_r_0 = []
-w_i_1 = []
-w_i_0 = []
 
 # File for debugging
 file = open('pulse_ox_debug.txt', 'w')
@@ -52,7 +50,7 @@ while True:
         w_i_0.append(mx.buffer_ir[1] + ALPHA*mx.buffer_ir[0])
 
         # Write to file
-        file.write(str(mx.red) + ',' + str(mx.ir) + ',' + str(red_filter[-1]) + ',' + str(ir_filter[-1]) + '\n')
+        #file.write(str(mx.red) + ',' + str(mx.ir) + ',' + str(red_filter[-1]) + ',' + str(ir_filter[-1]) + '\n')
     elif len(mx.buffer_red) > 2:
         w_r_0.append(mx.buffer_red[-1] + ALPHA*w_r_0[-1])
         w_i_0.append(mx.buffer_ir[-1] + ALPHA*w_i_0[-1])
@@ -71,10 +69,10 @@ while True:
         #red_filter.append(w_r_1-w_r_0)
 
         # Write to file
-        file.write(str(mx.red) + ',' + str(mx.ir) + ',' + str(red_filter[-1]) + ',' + str(ir_filter[-1]) + '\n')
+        #file.write(str(mx.red) + ',' + str(mx.ir) + ',' + str(red_filter[-1]) + ',' + str(ir_filter[-1]) + '\n')
 
     # Now see if calibration is done
-    if len(red_filter) > 400:
+    if len(red_filter) > 498:
         # Make calculations
         AC_RED = math.sqrt(sum([i**2 for i in red_filter])/len(red_filter))
         AC_IR  = math.sqrt(sum([i**2 for i in ir_filter])/len(ir_filter))
