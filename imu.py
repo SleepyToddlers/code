@@ -85,13 +85,13 @@ def get_sleep_position():
 
     # Run scenarios to determine position
     if  -45 < x_roll < 45: # Back
-        return ('{0:.4f}'.format(x_roll) + '|Back')
+        return ('{0:.4f}'.format(x_roll) + ',Back')
     elif 45 <= x_roll <= 135: # Left Side
-        return ('{0:.4f}'.format(x_roll) + '|Left Side')
+        return ('{0:.4f}'.format(x_roll) + ',LeftSide')
     elif -135 <= x_roll <= -45: # Right Side
-        return ('{0:.4f}'.format(x_roll) + '|Right Side')
+        return ('{0:.4f}'.format(x_roll) + ',RightSide')
     else: # Back
-        return ('{0:.4f}'.format(x_roll) + '|Stomach')
+        return ('{0:.4f}'.format(x_roll) + ',Stomach')
 
 
 
@@ -179,7 +179,7 @@ def get_current_y_rotation():
 
 #note that for the data, the VCC is in the upper left corner for al of these
 def write_data_to_file():
-	filename = "45Down.txt"
+	filename = "imu_data.txt"
 	with open(filename,"w") as datafile:
 		temp_datapoints = 1000
 		temp_counter =0
@@ -214,10 +214,7 @@ def write_data_to_file():
 			datafile.write(',')
 			datafile.write("{0:.4f}".format(get_accel_zout()))
 			datafile.write('\n')
-		
 
-		
-	
 	
 #initializing imu stuff needed in order to have the bus system work
 # Power management registers
