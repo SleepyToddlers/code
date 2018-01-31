@@ -1,5 +1,5 @@
 import Adafruit_ADS1x15
-import imu
+#import imu
 import time
 
 # Variable for sampling, says 128 sps
@@ -26,14 +26,14 @@ time_0 = time.time()
 
 while True:
     # Get sensor data
-	accel = imu.get_sleep_position()
+	#accel = imu.get_sleep_position()
     belt = str(adc_48.read_adc_difference(0, gain=4))
     temp = str(adc_48.read_adc_difference(3, gain=4))
     snor = str(adc_49.read_adc(3, gain=1))
 	ekg = str(adc_49.read_adc(0, gain = 1))
 
     # format output
-    output = belt + ',' + temp + ',' + snor + ',' + ekg + ',' + accel +  '\n'
+    output = belt + ',' + temp + ',' + snor + ',' + ekg +  '\n'
     file.write(output)
 
     print(str(i))
