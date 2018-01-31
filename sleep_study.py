@@ -37,7 +37,7 @@ while True:
     file.write(output)
 
     print(str(i))
-    if time.time() - time_0 = MINUTES_TO_RECORD*60:
+    if time.time() - time_0 == MINUTES_TO_RECORD*60:
         break
 
 file.close()
