@@ -19,7 +19,6 @@ import math
 class IMU(object):
 
 
-<<<<<<< HEAD
 	# return the sleep position of the patient
 	@property
 	def sleep_position(self):
@@ -67,66 +66,3 @@ class IMU(object):
 	def dist(a,b):
 		return math.sqrt((a*a)+(b*b))
 ''' ------------------------------------------------------------ '''
-=======
-        ''' Reading / Setup Functions --------------------------------- '''
-    def read_byte(adr):
-        return bus.read_byte_data(address, adr)
-
-    def read_word(adr):
-        high = bus.read_byte_data(address, adr)
-        low = bus.read_byte_data(address, adr+1)
-        val = (high << 8) + low
-        return val
-
-    def read_word_2c(adr):
-        val = read_word(adr)
-        if (val >= 0x8000):
-            return -((65535 - val) + 1)
-        else:
-            return val
-
-    def dist(a,b):
-        return math.sqrt((a*a)+(b*b))
-    ''' ------------------------------------------------------------ '''
-    # Initialize the class
-    def __init__(self):
-        #initializing imu stuff needed in order to have the bus system work
-        # Power management registers
-        power_mgmt_1 = 0x6b
-        power_mgmt_2 = 0x6c
-
-        bus = smbus.SMBus(1) # or bus = smbus.SMBus(1) for Revision 2 boards
-        address = 0x68       # This is the address value read via the i2cdetect command
-
-        # Now wake the 6050 up as it starts in sleep mode
-        bus.write_byte_data(address, power_mgmt_1, 0)
-
-        current_sleep_position = ''
-
-    # return the sleep position of the patient
-    @property
-    def sleep_position(self):
-        x_roll = self.get_x_roll() # Get current roll angle
-
-        # Run scenarios to determine position
-        if  -45 < x_roll < 45: # Back
-            return ('{0:.4f}'.format(x_roll) + ',Back')
-        elif 45 <= x_roll <= 135: # Left Side
-            return ('{0:.4f}'.format(x_roll) + ',LeftSide')
-        elif -135 <= x_roll <= -45: # Right Side
-            return ('{0:.4f}'.format(x_roll) + ',RightSide')
-        else: # Back
-            return ('{0:.4f}'.format(x_roll) + ',Stomach')
-
-    def get_x_roll(self):
-        radians = math.atan2(self.get_accel_xout(),
-                            self.get_accel_zout(self))
-
-        return math.degrees(radians)
-
-    def get_accel_xout(self):
-        return (read_word_2c(0x3b) / 16384.0)
-
-    def get_accel_zout(self):
-        return (read_word_2c(0x3f) / 16384.0)
->>>>>>> abe584f7da88bc168cd033c1750c8a2ed5f67db6
