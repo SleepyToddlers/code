@@ -38,7 +38,7 @@ while(time.time() < end_time):
         nas_temp.append(str(b))
         belt.append(str(c))
         mic.append(str(d))
-        sleep_position.append(str(imu.sleep_position()))
+        sleep_position.append(str(imu.get_sleep_position()))
 
 
 file.write(str(time.time() - start_time))
