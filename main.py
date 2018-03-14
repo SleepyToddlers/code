@@ -19,7 +19,6 @@ belt           = deque()
 hr             = deque()
 mic            = deque()
 adc = ADC()
-imu = imu.IMU()
 
 # Set up a deque to determine when to filter
 start_time = time.time()
