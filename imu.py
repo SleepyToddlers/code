@@ -41,10 +41,10 @@ class IMU(object):
 		return math.degrees(radians)
 
 	def get_accel_xout(self):
-		return (read_word_2c(0x3b) / 16384.0)
+		return (self.read_word_2c(0x3b) / 16384.0)
 
 	def get_accel_zout(self):
-		return (read_word_2c(0x3f) / 16384.0)
+		return (self.read_word_2c(0x3f) / 16384.0)
 
 		''' Reading / Setup Functions --------------------------------- '''
 	def read_byte(self, adr):
