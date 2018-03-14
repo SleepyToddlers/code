@@ -13,30 +13,32 @@
 import smbus
 import math
 
-''' Reading / Setup Functions --------------------------------- '''
-def read_byte(adr):
-    return bus.read_byte_data(address, adr)
 
-def read_word(adr):
-    high = bus.read_byte_data(address, adr)
-    low = bus.read_byte_data(address, adr+1)
-    val = (high << 8) + low
-    return val
-
-def read_word_2c(adr):
-    val = read_word(adr)
-    if (val >= 0x8000):
-        return -((65535 - val) + 1)
-    else:
-        return val
-
-def dist(a,b):
-    return math.sqrt((a*a)+(b*b))
-''' ------------------------------------------------------------ '''
 
 # The driver of the imu object
 class IMU(object):
 
+
+		''' Reading / Setup Functions --------------------------------- '''
+	def read_byte(adr):
+		return bus.read_byte_data(address, adr)
+
+	def read_word(adr):
+		high = bus.read_byte_data(address, adr)
+		low = bus.read_byte_data(address, adr+1)
+		val = (high << 8) + low
+		return val
+
+	def read_word_2c(adr):
+		val = read_word(adr)
+		if (val >= 0x8000):
+			return -((65535 - val) + 1)
+		else:
+			return val
+
+	def dist(a,b):
+		return math.sqrt((a*a)+(b*b))
+	''' ------------------------------------------------------------ '''
 	# Initialize the class
 	def __init__(self):
 		#initializing imu stuff needed in order to have the bus system work
@@ -55,7 +57,7 @@ class IMU(object):
 	# return the sleep position of the patient
 	@property
 	def sleep_position(self):
-		x_roll = get_x_roll() # Get current roll angle
+		x_roll = self.get_x_roll() # Get current roll angle
 
 		# Run scenarios to determine position
 		if  -45 < x_roll < 45: # Back
@@ -67,14 +69,14 @@ class IMU(object):
 		else: # Back
 			return ('{0:.4f}'.format(x_roll) + ',Stomach')
 
-	def get_x_roll():
-		radians = math.atan2(get_accel_xout(),
-							get_accel_zout())
+	def get_x_roll(self):
+		radians = math.atan2(self.get_accel_xout(),
+							self.get_accel_zout(self))
 
 		return math.degrees(radians)
 
-	def get_accel_xout():
+	def get_accel_xout(self):
 		return (read_word_2c(0x3b) / 16384.0)
 
-	def get_accel_zout():
+	def get_accel_zout(self):
 		return (read_word_2c(0x3f) / 16384.0)

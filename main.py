@@ -19,6 +19,7 @@ belt           = deque()
 hr             = deque()
 mic            = deque()
 adc = ADC()
+imu = imu.IMU()
 
 # Set up a deque to determine when to filter
 start_time = time.time()
@@ -28,7 +29,7 @@ end_time = start_time * 60 * TEST_DURATION
 file = open('ted_shirt_verification.txt', 'w')
 
 # Write the time
-file.write(start_time)
+file.write(str(start_time))
 
 # Get the data
 while(time.time() < end_time):
