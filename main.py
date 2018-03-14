@@ -32,7 +32,7 @@ file.write(start_time)
 
 # Get the data
 while(time.time() < end_time):
-	for i in range(0,5000)
+	for i in range(0,5000):
 		a,b,c,d = adc.read_data()
 		hr.append(str(a))
 		nas_temp.append(str(b))
