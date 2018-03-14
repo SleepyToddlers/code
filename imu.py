@@ -47,16 +47,16 @@ class IMU(object):
 		return (read_word_2c(0x3f) / 16384.0)
 
 		''' Reading / Setup Functions --------------------------------- '''
-	def read_byte(adr):
+	def read_byte(self, adr):
 		return bus.read_byte_data(address, adr)
 
-	def read_word(adr):
+	def read_word(self, adr):
 		high = bus.read_byte_data(address, adr)
 		low = bus.read_byte_data(address, adr+1)
 		val = (high << 8) + low
 		return val
 
-	def read_word_2c(adr):
+	def read_word_2c(self, adr):
 		val = read_word(adr)
 		if (val >= 0x8000):
 			return -((65535 - val) + 1)
