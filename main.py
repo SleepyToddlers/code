@@ -33,13 +33,13 @@ file.write(str(start_time))
 
 # Get the data
 while(time.time() < end_time):
-	for i in range(0,5000):
-		a,b,c,d = adc.read_data()
-		hr.append(str(a))
-		nas_temp.append(str(b))
-		belt.append(str(c))
-		mic.append(str(d))
-		sleep_position.append(str(imu.sleep_position()))
+    for i in range(0,5000):
+        a,b,c,d = adc.read_data()
+        hr.append(str(a))
+        nas_temp.append(str(b))
+        belt.append(str(c))
+        mic.append(str(d))
+        sleep_position.append(str(imu.sleep_position()))
 
 
 file.write(str(time.time() - start_time))
