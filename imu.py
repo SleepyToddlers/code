@@ -19,20 +19,20 @@ import math
 class IMU(object):
 
 	# Initialize the class
-    def __init__(self):
-        #initializing imu stuff needed in order to have the bus system work
-        # Power management registers
-        power_mgmt_1 = 0x6b
-        power_mgmt_2 = 0x6c
+	def __init__(self):
+		#initializing imu stuff needed in order to have the bus system work
+		# Power management registers
+		power_mgmt_1 = 0x6b
+		power_mgmt_2 = 0x6c
 
-        bus = smbus.SMBus(1) # or bus = smbus.SMBus(1) for Revision 2 boards
-        address = 0x68       # This is the address value read via the i2cdetect command
+		bus = smbus.SMBus(1) # or bus = smbus.SMBus(1) for Revision 2 boards
+		address = 0x68       # This is the address value read via the i2cdetect command
 
-        # Now wake the 6050 up as it starts in sleep mode
-        bus.write_byte_data(address, power_mgmt_1, 0)
+		# Now wake the 6050 up as it starts in sleep mode
+		bus.write_byte_data(address, power_mgmt_1, 0)
 
-        current_sleep_position = ''
-
+		current_sleep_position = ''
+		
 	# return the sleep position of the patient
 	@property
 	def sleep_position(self):
