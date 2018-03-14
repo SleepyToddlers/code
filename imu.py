@@ -1,21 +1,3 @@
-Skip to content
-This repository
-Search
-Pull requests
-Issues
-Marketplace
-Explore
- @SleepyToddlers
-Sign out
-0
-0 0 SleepyToddlers/code
- Code  Issues 0  Pull requests 0  Projects 0  Wiki  Insights  Settings
-code/imu.py
-a08c001  on Jan 21
-@fsqiu fsqiu removed py_cache
-@dmsnie @fsqiu
-     
-265 lines (195 sloc)  7.27 KB
 #!/usr/bin/python
 # External Libraries
 import smbus
