@@ -15,6 +15,7 @@
 from collections import deque
 import Adafruit_ADS1x15
 
+
 ''' Setup Functions ----------------------------------- '''
 
 
@@ -36,7 +37,7 @@ class ADC(object):
 
     @property
     def heart_rate(self):
-        return self.device.read_adc(0, gain=1)
+        return self.device.read_adc(3, gain=1)
 
     @property
     def nasal_temp(self):
@@ -44,11 +45,11 @@ class ADC(object):
 
     @property
     def respiratory_belt(self):
-        return self.device.read_adc(0, gain=1)
+        return self.device.read_adc(1, gain=1)
 
     @property
     def snore_mic(self):
-        return self.device.read_adc(0, gain=1)
+        return self.device.read_adc(2, gain=1)
 
     def read_data(self):
         return (self.heart_rate, 
